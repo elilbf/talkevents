@@ -1,10 +1,13 @@
 package com.talkevents.jpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.io.Serial;
@@ -30,6 +33,11 @@ public class Location implements Serializable {
 
     @Column(nullable = false)
     private int capacity;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
 
     public UUID getId() {
         return id;

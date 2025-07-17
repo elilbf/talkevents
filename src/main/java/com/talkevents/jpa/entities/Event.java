@@ -1,6 +1,7 @@
 package com.talkevents.jpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.io.Serial;
@@ -48,6 +50,17 @@ public class Event implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "attendee_id")
     )
     private Set<Attendee> attendees = new HashSet<>();
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private Location location;
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public Set<Attendee> getAttendees() {
         return attendees;

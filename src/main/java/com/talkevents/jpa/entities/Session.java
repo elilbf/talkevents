@@ -6,12 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +41,34 @@ public class Session implements Serializable {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
+
+    @ManyToMany
+    @JoinTable(
+            name = "session_attendee",
+            joinColumns = @JoinColumn(name = "sessionId"),
+            inverseJoinColumns = @JoinColumn(name = "attendeeId")
+    )
+    private Set<Attendee> attendees = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "speakerId")
+    private Speaker speaker;
+
+    public Set<Attendee> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<Attendee> attendees) {
+        this.attendees = attendees;
+    }
+
+    public Speaker getSpeaker() {
+        return speaker;
+    }
+
+    public void setSpeaker(Speaker speaker) {
+        this.speaker = speaker;
+    }
 
     public Event getEvent() {
         return event;
